@@ -103,6 +103,7 @@ def score_word(word):
     for letter in word:
         score += LETTER_POINTS[letter.upper()]
 
+    # Points bonus for words having 7-10 letters
     if (len(word) >= 7):
         score += 8
 
@@ -112,20 +113,27 @@ def get_highest_word_score(word_list):
     i = 0
     max_score_ind = 0
     scores = []
+    
     for word in word_list:
-        scores[i] = score_word(word)
+
+        scores.append(score_word(word))      
+        
         if (i == 0):
             max_score_ind = 0
         elif (scores[i] > scores[max_score_ind]):
+            #New high score, track its index
             max_score_ind = i
         elif (scores[i] == scores[max_score_ind]):
             x = len(word_list[i])
             y = len(word_list[max_score_ind])
+            # Equality rule 1: Multiple words with same score - keep the earlier word in list
             if (x == y):
                 pass
+            #Equality rule 2: If both words less than 10 letters, pick word with less letters
             elif ((x < 10) and (y < 10)):
                 if (x < y):
                     max_score_ind = i
+            # Equality rule 3: If next word has 10 letters but previous one is less, pick the new one
             elif (x == 10 and y < 10):
                 max_score_ind = i
 
